@@ -11,22 +11,43 @@ CORS(app)
 client = MongoClient(config.DB_URL)
 db = client['telegram_game']
 users_collection = db['users']
+characters_collection = db['characters']
+
+characters = [
+    {'name': 'Jellyfish', 'coins': 2000, 'purchased': False, 'level': 0},
+    {'name': 'Mr Crabs', 'coins': 4000, 'purchased': False, 'level': 0},
+    {'name': 'Minnows', 'coins': 6000, 'purchased': False, 'level': 0},
+    {'name': 'Neon Tetra', 'coins': 8000, 'purchased': False, 'level': 0},
+    {'name': 'Angelfish', 'coins': 10000, 'purchased': False, 'level': 0},
+    {'name': 'Clownfish', 'coins': 12000, 'purchased': False, 'level': 0},
+    {'name': 'Dogfish', 'coins': 14000, 'purchased': False, 'level': 0},
+    {'name': 'Baby Shark', 'coins': 16000, 'purchased': False, 'level': 0},
+    {'name': 'Octopus', 'coins': 18000, 'purchased': False, 'level': 0},
+    {'name': 'Parrotfish', 'coins': 20000, 'purchased': False, 'level': 0},
+]
 
 
 @app.route('/user', methods=['POST'])
 def create_user():
     data = request.json
-    user = {
-        'telegram_id': data['telegram_id'],
-        'username': data.get('username'),
-        'first_name': data.get('first_name'),
-        'last_name': data.get('last_name'),
-        'coins': 0,
-        'character': 1,
-        'level': 0
-    }
-    result = users_collection.insert_one(user)
-    return jsonify({"message": "User created successfully", "id": str(result.inserted_id)}), 201
+
+    user = users_collection.find_one({"telegram_id": data['telegram_id']})
+
+    if not user:
+        user = {
+            'telegram_id': data['telegram_id'],
+            'user': data.get('user'),
+            'first_name': data.get('first_name'),
+            'last_name': data.get('last_name'),
+            'coins': 0,
+            'cur_character': 0,
+            'cur_level': 0,
+            'characters': characters
+        }
+        result = users_collection.insert_one(user)
+        return jsonify({"message": "User created successfully", "id": str(result.inserted_id)}), 201
+    else:
+        return jsonify({"message": "User exists Already"}), 201
 
 
 @app.route('/user/<int:telegram_id>', methods=['GET'])
