@@ -1,0 +1,1 @@
+DB_URL = "mongodb+srv://ranjithjupaka:fRIDGwFzy7niGoMq@cluster0.olzgdme.mongodb.net"
