@@ -40,7 +40,7 @@ def create_user():
     if not user:
         user = {
             'telegram_id': data['telegram_id'],
-            'user': data.get('user'),
+            'username': data.get('username'),
             'first_name': data.get('first_name'),
             'last_name': data.get('last_name'),
             'coins': 0,
