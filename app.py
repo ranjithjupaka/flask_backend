@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, jsonify
 from pymongo import MongoClient, DESCENDING
 from bson import ObjectId
@@ -7,6 +9,8 @@ import config
 
 app = Flask(__name__)
 CORS(app)
+
+port = int(os.environ.get("PORT", 8000))
 
 client = MongoClient(config.DB_URL)
 db = client['telegram_game']
@@ -102,4 +106,4 @@ def get_users_by_coins():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0',port=port)
