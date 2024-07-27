@@ -70,8 +70,8 @@ def update_user(telegram_id):
     if data.get("coins"):
         update_data["coins"] = data.get("coins")
 
-    if data.get("character"):
-        update_data["cur_character"] = data.get("character")
+    if data.get("characters"):
+        update_data["characters"] = data.get("characters")
 
     if data.get("level"):
         update_data["cur_level"] = data.get("level")
