@@ -18,16 +18,16 @@ users_collection = db['users']
 characters_collection = db['characters']
 
 characters = [
-    {'name': 'Jellyfish', 'coins': 100, 'purchased': False, 'level': 0, 'rate': 2},
-    {'name': 'Mr Crabs', 'coins': 400, 'purchased': False, 'level': 0, 'rate': 3},
-    {'name': 'Minnows', 'coins': 600, 'purchased': False, 'level': 0, 'rate': 4},
-    {'name': 'Neon Tetra', 'coins': 800, 'purchased': False, 'level': 0, 'rate': 5},
-    {'name': 'Angelfish', 'coins': 1000, 'purchased': False, 'level': 0, 'rate': 6},
-    {'name': 'Clownfish', 'coins': 1200, 'purchased': False, 'level': 0, 'rate': 7},
-    {'name': 'Dogfish', 'coins': 1400, 'purchased': False, 'level': 0, 'rate': 8},
-    {'name': 'Baby Shark', 'coins': 1600, 'purchased': False, 'level': 0, 'rate': 9},
-    {'name': 'Octopus', 'coins': 1800, 'purchased': False, 'level': 0, 'rate': 10},
-    {'name': 'Parrotfish', 'coins': 2000, 'purchased': False, 'level': 0, 'rate': 11},
+    {'name': 'Jellyfish', 'coins': 100,'level': 0, 'rate': 60},
+    {'name': 'Mr Crabs', 'coins': 400,'level': 0, 'rate': 120},
+    {'name': 'Minnows', 'coins': 600,'level': 0, 'rate': 180},
+    {'name': 'Neon Tetra', 'coins': 800,'level': 0, 'rate': 240},
+    {'name': 'Angelfish', 'coins': 1000,'level': 0, 'rate': 300},
+    {'name': 'Clownfish', 'coins': 1200,'level': 0, 'rate': 360},
+    {'name': 'Dogfish', 'coins': 1400,'level': 0, 'rate': 420},
+    {'name': 'Baby Shark', 'coins': 1600,'level': 0, 'rate': 480},
+    {'name': 'Octopus', 'coins': 1800,'level': 0, 'rate': 540},
+    {'name': 'Parrotfish', 'coins': 2000,'level': 0, 'rate': 600},
 ]
 
 
