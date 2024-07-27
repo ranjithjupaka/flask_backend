@@ -18,16 +18,16 @@ users_collection = db['users']
 characters_collection = db['characters']
 
 characters = [
-    {'name': 'Jellyfish', 'coins': 2000, 'purchased': False, 'level': 0},
-    {'name': 'Mr Crabs', 'coins': 4000, 'purchased': False, 'level': 0},
-    {'name': 'Minnows', 'coins': 6000, 'purchased': False, 'level': 0},
-    {'name': 'Neon Tetra', 'coins': 8000, 'purchased': False, 'level': 0},
-    {'name': 'Angelfish', 'coins': 10000, 'purchased': False, 'level': 0},
-    {'name': 'Clownfish', 'coins': 12000, 'purchased': False, 'level': 0},
-    {'name': 'Dogfish', 'coins': 14000, 'purchased': False, 'level': 0},
-    {'name': 'Baby Shark', 'coins': 16000, 'purchased': False, 'level': 0},
-    {'name': 'Octopus', 'coins': 18000, 'purchased': False, 'level': 0},
-    {'name': 'Parrotfish', 'coins': 20000, 'purchased': False, 'level': 0},
+    {'name': 'Jellyfish', 'coins': 100, 'purchased': False, 'level': 0, 'rate': 2},
+    {'name': 'Mr Crabs', 'coins': 400, 'purchased': False, 'level': 0, 'rate': 3},
+    {'name': 'Minnows', 'coins': 600, 'purchased': False, 'level': 0, 'rate': 4},
+    {'name': 'Neon Tetra', 'coins': 800, 'purchased': False, 'level': 0, 'rate': 5},
+    {'name': 'Angelfish', 'coins': 1000, 'purchased': False, 'level': 0, 'rate': 6},
+    {'name': 'Clownfish', 'coins': 1200, 'purchased': False, 'level': 0, 'rate': 7},
+    {'name': 'Dogfish', 'coins': 1400, 'purchased': False, 'level': 0, 'rate': 8},
+    {'name': 'Baby Shark', 'coins': 1600, 'purchased': False, 'level': 0, 'rate': 9},
+    {'name': 'Octopus', 'coins': 1800, 'purchased': False, 'level': 0, 'rate': 10},
+    {'name': 'Parrotfish', 'coins': 2000, 'purchased': False, 'level': 0, 'rate': 11},
 ]
 
 
@@ -98,7 +98,7 @@ def get_users_by_coins():
 
     users = users_collection.find(
         {"coins": {"$gte": min_coins}},
-        {"_id": 0}  # Exclude _id field from results
+        {"_id": 0, "characters": 0}  # Exclude _id field from results
     ).sort("coins", DESCENDING).limit(limit)
 
     user_list = list(users)
@@ -106,4 +106,4 @@ def get_users_by_coins():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0',port=port)
+    app.run(debug=True, host='0.0.0.0', port=port)
