@@ -66,19 +66,15 @@ def get_user(telegram_id):
 @app.route('/user/<int:telegram_id>', methods=['PUT'])
 def update_user(telegram_id):
     data = request.json
-    update_data = {
-        "coins": data.get('coins'),
-        "character": data.get('character'),
-        "level": data.get('level')
-    }
+    update_data = {}
     if data.get("coins"):
         update_data["coins"] = data.get("coins")
 
     if data.get("character"):
-        update_data["character"] = data.get("character")
+        update_data["cur_character"] = data.get("character")
 
     if data.get("level"):
-        update_data["coins"] = data.get('coins')
+        update_data["cur_level"] = data.get("level")
 
     print(update_data, 'update_data')
 
