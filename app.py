@@ -1,5 +1,3 @@
-import os
-
 from flask import Flask, request, jsonify
 from pymongo import MongoClient, DESCENDING
 from bson import ObjectId
@@ -10,48 +8,26 @@ import config
 app = Flask(__name__)
 CORS(app)
 
-port = int(os.environ.get("PORT", 8000))
-
 client = MongoClient(config.DB_URL)
 db = client['telegram_game']
 users_collection = db['users']
-characters_collection = db['characters']
-
-characters = [
-    {'name': 'Jellyfish', 'coins': 100,'level': 0, 'rate': 60},
-    {'name': 'Mr Crabs', 'coins': 400,'level': 0, 'rate': 120},
-    {'name': 'Minnows', 'coins': 600,'level': 0, 'rate': 180},
-    {'name': 'Neon Tetra', 'coins': 800,'level': 0, 'rate': 240},
-    {'name': 'Angelfish', 'coins': 1000,'level': 0, 'rate': 300},
-    {'name': 'Clownfish', 'coins': 1200,'level': 0, 'rate': 360},
-    {'name': 'Dogfish', 'coins': 1400,'level': 0, 'rate': 420},
-    {'name': 'Baby Shark', 'coins': 1600,'level': 0, 'rate': 480},
-    {'name': 'Octopus', 'coins': 1800,'level': 0, 'rate': 540},
-    {'name': 'Parrotfish', 'coins': 2000,'level': 0, 'rate': 600},
-]
 
 
 @app.route('/user', methods=['POST'])
 def create_user():
     data = request.json
-
-    user = users_collection.find_one({"telegram_id": data['telegram_id']})
-
-    if not user:
-        user = {
-            'telegram_id': data['telegram_id'],
-            'username': data.get('username'),
-            'first_name': data.get('first_name'),
-            'last_name': data.get('last_name'),
-            'coins': 0,
-            'cur_character': 0,
-            'cur_level': 0,
-            'characters': characters
-        }
-        result = users_collection.insert_one(user)
-        return jsonify({"message": "User created successfully", "id": str(result.inserted_id)}), 201
-    else:
-        return jsonify({"message": "User exists Already"}), 201
+    user = {
+        'telegram_id': data['telegram_id'],
+        'username': data.get('username'),
+        'first_name': data.get('first_name'),
+        'last_name': data.get('last_name'),
+        'coins': 0,
+        'character': 1,
+        'level': 0,
+        'tickets':0
+    }
+    result = users_collection.insert_one(user)
+    return jsonify({"message": "User created successfully", "id": str(result.inserted_id)}), 201
 
 
 @app.route('/user/<int:telegram_id>', methods=['GET'])
@@ -67,14 +43,18 @@ def get_user(telegram_id):
 def update_user(telegram_id):
     data = request.json
     update_data = {}
+
+    if data.get("tickets"):
+        update_data["tickets"] = data.get("tickets")
+
     if data.get("coins"):
         update_data["coins"] = data.get("coins")
 
-    if data.get("characters"):
-        update_data["characters"] = data.get("characters")
+    if data.get("character"):
+        update_data["character"] = data.get("character")
 
     if data.get("level"):
-        update_data["cur_level"] = data.get("level")
+        update_data["coins"] = data.get('coins')
 
     print(update_data, 'update_data')
 
@@ -94,7 +74,7 @@ def get_users_by_coins():
 
     users = users_collection.find(
         {"coins": {"$gte": min_coins}},
-        {"_id": 0, "characters": 0}  # Exclude _id field from results
+        {"_id": 0}  # Exclude _id field from results
     ).sort("coins", DESCENDING).limit(limit)
 
     user_list = list(users)
@@ -102,4 +82,4 @@ def get_users_by_coins():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=port)
+    app.run(debug=True)
