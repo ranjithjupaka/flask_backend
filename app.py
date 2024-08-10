@@ -15,34 +15,40 @@ db = client['telegram_game']
 users_collection = db['users']
 
 characters = [
-    {'name': 'Jellyfish', 'coins': 100,'level': 0, 'rate': 60},
-    {'name': 'Mr Crabs', 'coins': 400,'level': 0, 'rate': 120},
-    {'name': 'Minnows', 'coins': 600,'level': 0, 'rate': 180},
-    {'name': 'Neon Tetra', 'coins': 800,'level': 0, 'rate': 240},
-    {'name': 'Angelfish', 'coins': 1000,'level': 0, 'rate': 300},
-    {'name': 'Clownfish', 'coins': 1200,'level': 0, 'rate': 360},
-    {'name': 'Dogfish', 'coins': 1400,'level': 0, 'rate': 420},
-    {'name': 'Baby Shark', 'coins': 1600,'level': 0, 'rate': 480},
-    {'name': 'Octopus', 'coins': 1800,'level': 0, 'rate': 540},
-    {'name': 'Parrotfish', 'coins': 2000,'level': 0, 'rate': 600},
+    {'name': 'Jellyfish', 'coins': 100, 'level': 0, 'rate': 60},
+    {'name': 'Mr Crabs', 'coins': 400, 'level': 0, 'rate': 120},
+    {'name': 'Minnows', 'coins': 600, 'level': 0, 'rate': 180},
+    {'name': 'Neon Tetra', 'coins': 800, 'level': 0, 'rate': 240},
+    {'name': 'Angelfish', 'coins': 1000, 'level': 0, 'rate': 300},
+    {'name': 'Clownfish', 'coins': 1200, 'level': 0, 'rate': 360},
+    {'name': 'Dogfish', 'coins': 1400, 'level': 0, 'rate': 420},
+    {'name': 'Baby Shark', 'coins': 1600, 'level': 0, 'rate': 480},
+    {'name': 'Octopus', 'coins': 1800, 'level': 0, 'rate': 540},
+    {'name': 'Parrotfish', 'coins': 2000, 'level': 0, 'rate': 600},
 ]
 
 
 @app.route('/user', methods=['POST'])
 def create_user():
     data = request.json
-    user = {
-        'telegram_id': data['telegram_id'],
-        'username': data.get('username'),
-        'first_name': data.get('first_name'),
-        'last_name': data.get('last_name'),
-        'coins': 0,
-        'character': characters,
-        'level': 0,
-        'tickets':0
-    }
-    result = users_collection.insert_one(user)
-    return jsonify({"message": "User created successfully", "id": str(result.inserted_id)}), 201
+
+    user_details = users_collection.find_one({"telegram_id": data['telegram_id']})
+
+    if not user_details:
+        user = {
+            'telegram_id': data['telegram_id'],
+            'username': data.get('username'),
+            'first_name': data.get('first_name'),
+            'last_name': data.get('last_name'),
+            'coins': 0,
+            'characters': characters,
+            'level': 0,
+            'tickets': 0
+        }
+        result = users_collection.insert_one(user)
+        return jsonify({"message": "User created successfully", "id": str(result.inserted_id)}), 201
+    else:
+        return jsonify({"message": "User already exists "}), 400
 
 
 @app.route('/user/<int:telegram_id>', methods=['GET'])
@@ -65,8 +71,8 @@ def update_user(telegram_id):
     if data.get("coins"):
         update_data["coins"] = data.get("coins")
 
-    if data.get("character"):
-        update_data["character"] = data.get("character")
+    if data.get("characters"):
+        update_data["characters"] = data.get("characters")
 
     if data.get("level"):
         update_data["coins"] = data.get('coins')
@@ -97,4 +103,4 @@ def get_users_by_coins():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0',port=int(os.getenv('PORT', 8000)))
+    app.run(debug=True, host='0.0.0.0', port=int(os.getenv('PORT', 8000)))
