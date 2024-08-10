@@ -23,7 +23,8 @@ def create_user():
         'last_name': data.get('last_name'),
         'coins': 0,
         'character': 1,
-        'level': 0
+        'level': 0,
+        'tickets':0
     }
     result = users_collection.insert_one(user)
     return jsonify({"message": "User created successfully", "id": str(result.inserted_id)}), 201
@@ -41,11 +42,11 @@ def get_user(telegram_id):
 @app.route('/user/<int:telegram_id>', methods=['PUT'])
 def update_user(telegram_id):
     data = request.json
-    update_data = {
-        "coins": data.get('coins'),
-        "character": data.get('character'),
-        "level": data.get('level')
-    }
+    update_data = {}
+
+    if data.get("tickets"):
+        update_data["tickets"] = data.get("tickets")
+
     if data.get("coins"):
         update_data["coins"] = data.get("coins")
 
