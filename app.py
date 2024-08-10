@@ -14,6 +14,19 @@ client = MongoClient(config.DB_URL)
 db = client['telegram_game']
 users_collection = db['users']
 
+characters = [
+    {'name': 'Jellyfish', 'coins': 100,'level': 0, 'rate': 60},
+    {'name': 'Mr Crabs', 'coins': 400,'level': 0, 'rate': 120},
+    {'name': 'Minnows', 'coins': 600,'level': 0, 'rate': 180},
+    {'name': 'Neon Tetra', 'coins': 800,'level': 0, 'rate': 240},
+    {'name': 'Angelfish', 'coins': 1000,'level': 0, 'rate': 300},
+    {'name': 'Clownfish', 'coins': 1200,'level': 0, 'rate': 360},
+    {'name': 'Dogfish', 'coins': 1400,'level': 0, 'rate': 420},
+    {'name': 'Baby Shark', 'coins': 1600,'level': 0, 'rate': 480},
+    {'name': 'Octopus', 'coins': 1800,'level': 0, 'rate': 540},
+    {'name': 'Parrotfish', 'coins': 2000,'level': 0, 'rate': 600},
+]
+
 
 @app.route('/user', methods=['POST'])
 def create_user():
@@ -24,7 +37,7 @@ def create_user():
         'first_name': data.get('first_name'),
         'last_name': data.get('last_name'),
         'coins': 0,
-        'character': 1,
+        'character': characters,
         'level': 0,
         'tickets':0
     }
