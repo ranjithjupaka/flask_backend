@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 from pymongo import MongoClient, DESCENDING
 from bson import ObjectId
 from flask_cors import CORS
+from pytonconnect import TonConnect
 
 import config
 
@@ -13,6 +14,10 @@ CORS(app)
 client = MongoClient(config.DB_URL)
 db = client['telegram_game']
 users_collection = db['users']
+
+MANIFEST_URL = "https://your-app.com/tonconnect-manifest.json"
+
+ton_connect = TonConnect(MANIFEST_URL)
 
 characters = [
     {'name': 'Jellyfish', 'coins': 100, 'level': 0, 'rate': 60},
@@ -40,10 +45,13 @@ def create_user():
             'username': data.get('username'),
             'first_name': data.get('first_name'),
             'last_name': data.get('last_name'),
+            'ref_id': data.get('ref_id'),
             'coins': 0,
             'characters': characters,
             'level': 0,
-            'tickets': 0
+            'tickets': 0,
+            'wallet': "",
+            'refs': []
         }
         result = users_collection.insert_one(user)
         return jsonify({"message": "User created successfully", "id": str(result.inserted_id)}), 201
@@ -64,6 +72,12 @@ def get_user(telegram_id):
 def update_user(telegram_id):
     data = request.json
     update_data = {}
+
+    if data.get("wallet"):
+        update_data["wallet"] = data.get("wallet")
+
+    if data.get("refs"):
+        update_data["refs"] = data.get("refs")
 
     if data.get("tickets"):
         update_data["tickets"] = data.get("tickets")
