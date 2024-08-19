@@ -1,10 +1,11 @@
 import os
+import random
+import string
 
 from flask import Flask, request, jsonify
 from pymongo import MongoClient, DESCENDING
 from bson import ObjectId
 from flask_cors import CORS
-from pytonconnect import TonConnect
 
 import config
 
@@ -15,9 +16,8 @@ client = MongoClient(config.DB_URL)
 db = client['telegram_game']
 users_collection = db['users']
 
-MANIFEST_URL = "https://your-app.com/tonconnect-manifest.json"
-
-ton_connect = TonConnect(MANIFEST_URL)
+# MANIFEST_URL = "https://your-app.com/tonconnect-manifest.json"
+# ton_connect = TonConnect(MANIFEST_URL)
 
 characters = [
     {'name': 'Jellyfish', 'coins': 100, 'level': 0, 'rate': 60},
@@ -33,6 +33,11 @@ characters = [
 ]
 
 
+def generate_random_string(length):
+    alphanumeric_chars = string.ascii_letters + string.digits
+    return ''.join(random.choice(alphanumeric_chars) for _ in range(length))
+
+
 @app.route('/user', methods=['POST'])
 def create_user():
     data = request.json
@@ -40,18 +45,23 @@ def create_user():
     user_details = users_collection.find_one({"telegram_id": data['telegram_id']})
 
     if not user_details:
+        ref_id = generate_random_string(6)
         user = {
             'telegram_id': data['telegram_id'],
             'username': data.get('username'),
             'first_name': data.get('first_name'),
             'last_name': data.get('last_name'),
-            'ref_id': data.get('ref_id'),
+            'ref_id': ref_id,
             'coins': 0,
             'characters': characters,
             'level': 0,
             'tickets': 0,
             'wallet': "",
-            'refs': []
+            'refs': [],
+            'max_energy': 1000,
+            'coins_rate': 1,
+            'refresh_rate': 1
+
         }
         result = users_collection.insert_one(user)
         return jsonify({"message": "User created successfully", "id": str(result.inserted_id)}), 201
