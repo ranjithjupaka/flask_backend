@@ -60,7 +60,10 @@ def create_user():
             'refs': [],
             'max_energy': 1000,
             'coins_rate': 1,
-            'refresh_rate': 1
+            'refresh_rate': 1,
+            'youtube_reward': False,
+            'twitter_reward': False,
+            'telegram_reward': False,
 
         }
         result = users_collection.insert_one(user)
@@ -82,6 +85,24 @@ def get_user(telegram_id):
 def update_user(telegram_id):
     data = request.json
     update_data = {}
+
+    if data.get('max_energy'):
+        update_data['max_energy'] = data.get('max_energy')
+
+    if data.get('coins_rate'):
+        update_data['coins_rate'] = data.get('coins_rate')
+
+    if data.get('refresh_rate'):
+        update_data['refresh_rate'] = data.get('refresh_rate')
+
+    if data.get('youtube_reward'):
+        update_data['youtube_reward'] = data.get('youtube_reward')
+
+    if data.get('twitter_reward'):
+        update_data['twitter_reward'] = data.get('twitter_reward')
+
+    if data.get('telegram_reward'):
+        update_data['telegram_reward'] = data.get('telegram_reward')
 
     if data.get("wallet"):
         update_data["wallet"] = data.get("wallet")
