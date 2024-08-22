@@ -20,16 +20,26 @@ users_collection = db['users']
 # ton_connect = TonConnect(MANIFEST_URL)
 
 characters = [
-    {'name': 'Jellyfish', 'coins': 100, 'level': 0, 'rate': 60},
-    {'name': 'Mr Crabs', 'coins': 400, 'level': 0, 'rate': 120},
-    {'name': 'Minnows', 'coins': 600, 'level': 0, 'rate': 180},
-    {'name': 'Neon Tetra', 'coins': 800, 'level': 0, 'rate': 240},
-    {'name': 'Angelfish', 'coins': 1000, 'level': 0, 'rate': 300},
-    {'name': 'Clownfish', 'coins': 1200, 'level': 0, 'rate': 360},
-    {'name': 'Dogfish', 'coins': 1400, 'level': 0, 'rate': 420},
-    {'name': 'Baby Shark', 'coins': 1600, 'level': 0, 'rate': 480},
-    {'name': 'Octopus', 'coins': 1800, 'level': 0, 'rate': 540},
-    {'name': 'Parrotfish', 'coins': 2000, 'level': 0, 'rate': 600},
+    {'name': 'Minnows', 'coins': 1000, 'level': 0, 'rate': 100},
+    {'name': 'Neon Tetra', 'coins': 2000, 'level': 0, 'rate': 250},
+    {'name': 'Angelfish', 'coins': 5000, 'level': 0, 'rate': 600},
+    {'name': 'Clownfish', 'coins': 7500, 'level': 0, 'rate': 800},
+    {'name': 'Catfish', 'coins': 7500, 'level': 0, 'rate': 750},
+    {'name': 'Dogfish', 'coins': 8000, 'level': 0, 'rate': 1100},
+    {'name': 'Baby Shark', 'coins': 12000, 'level': 0, 'rate': 1300},
+    {'name': 'Octopus', 'coins': 15000, 'level': 0, 'rate': 1700},
+    {'name': 'Sad Clownfish', 'coins': 5000, 'level': 0, 'rate': 1500},
+    {'name': 'Parrotfish', 'coins': 20000, 'level': 0, 'rate': 2500},
+    {'name': 'Shrimp Cocktail', 'coins': 10000, 'level': 0, 'rate': 2000},
+    {'name': 'Seahorse', 'coins': 40000, 'level': 0, 'rate': 3000},
+    {'name': 'Mr Crabs', 'coins': 50000, 'level': 0, 'rate': 5000},
+    {'name': 'Jellyfish', 'coins': 50000, 'level': 0, 'rate': 5500},
+    {'name': 'Randy Cheeks', 'coins': 100000, 'level': 0, 'rate': 9000},
+    {'name': 'Shooting Starfish', 'coins': 50000, 'level': 0, 'rate': 3000},
+    {'name': 'Shark', 'coins': 120000, 'level': 0, 'rate': 6000},
+    {'name': 'Harry Puffer', 'coins': 600000, 'level': 0, 'rate': 10000},
+    {'name': 'Whale', 'coins': 3000000, 'level': 0, 'rate': 25000},
+    {'name': 'Kraken', 'coins': 1000000, 'level': 0, 'rate': 27000},
 ]
 
 
@@ -64,7 +74,6 @@ def create_user():
             'youtube_reward': False,
             'twitter_reward': False,
             'telegram_reward': False,
-
         }
         result = users_collection.insert_one(user)
         return jsonify({"message": "User created successfully", "id": str(result.inserted_id)}), 201
