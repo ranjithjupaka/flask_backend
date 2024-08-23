@@ -137,8 +137,33 @@ def update_user(telegram_id):
         {"telegram_id": telegram_id},
         {"$set": update_data}
     )
+
+    # users_collection.update_one(
+    #     {"telegram_id": telegram_id},
+    #     {
+    #         "$inc": {"coins": 50000},
+    #     }
+    # )
+
     if result.matched_count:
         return jsonify({"message": "User updated successfully"})
+    return jsonify({"message": "User not found"}), 404
+
+
+@app.route('/user/update-coins/<int:telegram_id>', methods=['PUT'])
+def update_coins(telegram_id):
+    data = request.json
+    coins = data.get("coins")
+
+    result = users_collection.update_one(
+        {"telegram_id": telegram_id},
+        {
+            "$inc": {"coins": coins},
+        }
+    )
+
+    if result.matched_count:
+        return jsonify({"message": "User Coins updated successfully"})
     return jsonify({"message": "User not found"}), 404
 
 
